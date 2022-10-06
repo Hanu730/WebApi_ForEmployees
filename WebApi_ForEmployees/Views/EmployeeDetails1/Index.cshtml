@@ -1,0 +1,109 @@
+﻿@model IEnumerable<WebApi_ForEmployees.Controllers.EmployeeDetail>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script>
+        $(document).ready(function () {
+
+
+            $("a").click(function () {
+
+                debugger;
+                var id = $(this).attr("id");
+                console.log(id);
+                $("#table1").hide();
+
+                this.onprogress();
+
+
+            });
+
+        });
+</script>
+<div id="Div2">
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+
+
+</div>
+
+<div id="table1">
+    <p>
+        @Ajax.ActionLink("Create New", "Create", new AjaxOptions() { HttpMethod = "Get", UpdateTargetId = "Div2", InsertionMode = InsertionMode.Replace })
+    </p>
+
+    @using (Html.BeginForm("Upload", "EmployeeDetails1", FormMethod.Post, new
+    {
+        enctype = "multipart/form-data"
+    }))
+    {
+
+
+        <table>
+            <tr>
+                <td>File:</td>
+                <td><input type="file" name="UploadedFile" /></td>
+
+            </tr>
+            <tr>
+                <td colspan="2"><input type="submit" name="Submit" value="Upload" /> </td>
+            </tr>
+        </table>
+
+
+    }
+    <div style="text-align:right; margin-bottom:10px;border-radius:5px">
+        <a href="@Url.Action("ExportToExcel","EmployeeDetails1")">
+            <button type="button" class="btn btn-info rounded">Export To Excel</button>
+        </a>
+         
+
+    </div>
+
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.EmpName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Department)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Salary)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Job)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmpName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Department)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Salary)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Job)
+                </td>
+                <td>
+                    @Ajax.ActionLink("Edit", "Edit", new { id = item.EmpId }, new AjaxOptions() { HttpMethod = "Get", UpdateTargetId = "Div2", InsertionMode = InsertionMode.Replace })
+                    @Ajax.ActionLink("Details", "Details", new { id = item.EmpId }, new AjaxOptions() { HttpMethod = "Get", UpdateTargetId = "Div2", InsertionMode = InsertionMode.Replace })|
+                    @Html.ActionLink("Delete", "Delete", new { id = item.EmpId })
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
